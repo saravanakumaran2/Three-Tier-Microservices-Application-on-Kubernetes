@@ -2,7 +2,7 @@
 releases:
   - name: three-tier-app
     chart: ./three-tier-app
-    installed: false
+    installed: true
     values:
       - ./three-tier-app/values.yaml
 
