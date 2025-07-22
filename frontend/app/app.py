@@ -4,7 +4,7 @@ import requests
 app = Flask(__name__)
 app.secret_key = "your_secret_key_here"
 
-BACKEND_URL = "http://backend:5001"
+BACKEND_URL = "http://backend.backend.svc.cluster.local:5000"
 
 @app.route('/')
 def home():
