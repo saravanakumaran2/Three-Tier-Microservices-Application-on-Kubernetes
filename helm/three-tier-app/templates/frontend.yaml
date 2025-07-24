@@ -19,6 +19,7 @@ spec:
           ports:
             - containerPort: {{ .Values.frontend.service.targetPort }}
 
+
 ---
 apiVersion: v1
 kind: Service
@@ -34,6 +35,7 @@ spec:
       port: {{ .Values.frontend.service.port }}
       targetPort: {{ .Values.frontend.service.targetPort }}
       nodePort: {{ .Values.frontend.service.nodePort }}
+
 
 
 ---

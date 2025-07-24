@@ -38,6 +38,7 @@ spec:
               value: {{ .Values.backend.env.mysqlHost }}
 
 
+
 ---
 apiVersion: v1
 kind: Service
@@ -52,6 +53,7 @@ spec:
       port: {{ .Values.backend.service.port }}
       targetPort: {{ .Values.backend.service.targetPort }}
   type: {{ .Values.backend.service.type }}
+
 
 
 ---

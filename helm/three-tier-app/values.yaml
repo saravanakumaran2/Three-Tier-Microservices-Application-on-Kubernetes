@@ -13,7 +13,7 @@ serviceAccount:
   annotations: {}
   name: ""
 
-# Frontend config
+# Frontend
 frontend:
   name: frontend
   namespace: frontend
@@ -29,7 +29,7 @@ frontend:
   env:
     backendUrl: http://backend.backend.svc.cluster.local:5001
 
-# Backend config
+# Backend
 backend:
   name: backend
   namespace: backend
@@ -50,7 +50,7 @@ backend:
   env:
     mysqlHost: mysql.mysql.svc.cluster.local
 
-# MySQL config
+# MySQL
 mysql:
   name: mysql
   namespace: mysql
@@ -81,7 +81,7 @@ mysql:
   volumeMounts:
     name: mysql-pv
 
-# Autoscaling (used in HPA)
+# Autoscaling
 autoscaling:
   enabled: false
   minReplicas: 1
@@ -89,7 +89,7 @@ autoscaling:
   targetCPUUtilizationPercentage: 80
   targetMemoryUtilizationPercentage: 80
 
-# Ingress - disabled (you are using NodePort for frontend)
+# Ingress 
 ingress:
   enabled: false
   className: ""
