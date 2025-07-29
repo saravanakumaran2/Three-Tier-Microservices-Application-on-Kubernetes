@@ -1,0 +1,56 @@
+version: '3.8'
+
+services:
+  db:
+    image: mysql:8
+    environment:
+      MYSQL_ROOT_PASSWORD: mypassword
+      MYSQL_DATABASE: mydb
+      MYSQL_USER: myuser
+      MYSQL_PASSWORD: mypassword
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - app-network
+    deploy:
+      placement:
+        constraints:
+          - node.hostname == yolvo-worker
+
+  backend:
+    image: saravana227/backend
+    environment:
+      MYSQL_HOST: db
+      MYSQL_USER: myuser
+      MYSQL_PASSWORD: mypassword
+      MYSQL_DATABASE: mydb
+    depends_on:
+      - db
+    networks:
+      - app-network
+    deploy:
+      placement:
+        constraints:
+          - node.hostname == yolvo-worker
+
+  frontend:
+    image: saravana227/frontend
+    environment:
+      - BACKEND_URL=http://backend:5001
+    ports:
+      - "5000:5000"
+    depends_on:
+      - backend
+    networks:
+      - app-network
+    deploy:
+      placement:
+        constraints:
+          - node.hostname == yolvo-worker
+
+volumes:
+  db_data:
+
+networks:
+  app-network:
+    driver: overlay

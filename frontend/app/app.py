@@ -1,10 +1,12 @@
 from flask import Flask, render_template, request, redirect, url_for, session
 import requests
+import os
 
 app = Flask(__name__)
 app.secret_key = "your_secret_key_here"
 
-BACKEND_URL = "http://backend.backend.svc.cluster.local:5000"
+BACKEND_URL = os.getenv("BACKEND_URL")
+
 
 @app.route('/')
 def home():

@@ -27,7 +27,7 @@ frontend:
     targetPort: 5000
     nodePort: 30080
   env:
-    backendUrl: http://backend.backend.svc.cluster.local:5001
+    backendUrl: http://backend.backend.svc.cluster.local:5000
 
 # Backend
 backend:
