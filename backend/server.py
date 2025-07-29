@@ -62,7 +62,7 @@ def login():
 
     try:
         db = get_db_connection()
-        cursor = db.cursor(buffered=True)  # ✅ Use buffered cursor here
+        cursor = db.cursor(buffered=True)
         cursor.execute("SELECT password FROM users WHERE username=%s", (username,))
         record = cursor.fetchone()
     except Exception as e:
