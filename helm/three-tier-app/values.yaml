@@ -22,12 +22,23 @@ frontend:
     name: mysql-secret
   service:
     name: frontend
-    type: NodePort
+    type: ClusterIP
     port: 80
     targetPort: 5000
-    nodePort: 30080
   env:
     backendUrl: http://backend.backend.svc.cluster.local:5000
+
+# Nginx Proxy
+nginx:
+  name: nginx-proxy
+  namespace: nginx-proxy
+  image: saravana227/nginx_proxy_k8s:latest
+  service:
+      name: nginx_proxy
+      type: NodePort
+      port: 80
+      targetPort: 80
+      nodePort: 30080
 
 # Backend
 backend:
@@ -89,7 +100,7 @@ autoscaling:
   targetCPUUtilizationPercentage: 80
   targetMemoryUtilizationPercentage: 80
 
-# Ingress 
+# Ingress
 ingress:
   enabled: false
   className: ""

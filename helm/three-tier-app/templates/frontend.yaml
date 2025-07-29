@@ -22,7 +22,6 @@ spec:
             - name: BACKEND_URL
               value: "{{ .Values.frontend.env.backendUrl }}"
 
-
 ---
 apiVersion: v1
 kind: Service
@@ -37,9 +36,6 @@ spec:
     - protocol: TCP
       port: {{ .Values.frontend.service.port }}
       targetPort: {{ .Values.frontend.service.targetPort }}
-      nodePort: {{ .Values.frontend.service.nodePort }}
-
-
 
 ---
 apiVersion: v1

@@ -48,6 +48,21 @@ services:
         constraints:
           - node.hostname == yolvo-worker
 
+  nginx:
+    image: saravana227/nginx_proxy_ds
+    ports:
+      - "80:80"
+    depends_on:
+      - frontend
+    networks:
+      - app-network
+    deploy:
+      placement:
+        constraints:
+          - node.hostname == yolvo-worker
+
+
+
 volumes:
   db_data:
 
