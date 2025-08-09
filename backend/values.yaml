@@ -1,0 +1,31 @@
+backend:
+  name: backend
+  namespace: backend
+  image: saravana227/backend:latest
+  secret:
+    name: mysql-secret
+    user:
+      key: user
+    password:
+      key: password
+    database:
+      key: database
+  service:
+    name: backend
+    type: ClusterIP
+    port: 5000
+    targetPort: 5001
+  env:
+    mysqlHost: mysql.mysql.svc.cluster.local
+  secret:
+    name: backend-secret
+    values:
+      user: bXl1c2Vy
+      password: bXlwYXNzd29yZA==
+      database: bXlkYg==
+    user:
+      key: user
+    password:
+      key: password
+    database:
+      key: database

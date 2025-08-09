@@ -1,0 +1,10 @@
+nginx:
+  name: nginx-proxy
+  namespace: nginx-proxy
+  image: saravana227/nginx_proxy_k8s:latest
+  service:
+      name: nginx_proxy
+      type: NodePort
+      port: 80
+      targetPort: 80
+      nodePort: 30080
