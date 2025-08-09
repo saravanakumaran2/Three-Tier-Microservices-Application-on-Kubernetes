@@ -1,3 +1,4 @@
+replicaCount: 3
 nginx:
   name: nginx-proxy
   namespace: nginx-proxy
