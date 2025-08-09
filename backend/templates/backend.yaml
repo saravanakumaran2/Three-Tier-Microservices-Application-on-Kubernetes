@@ -72,6 +72,6 @@ metadata:
   namespace: {{ .Values.backend.namespace }}
 type: Opaque
 data:
-  user: "{{ .Values.mysql.secret.values.user }}"
-  password: "{{ .Values.mysql.secret.values.password }}"
-  database: "{{ .Values.mysql.secret.values.database }}"
+  user: "{{ .Values.backend.secret.values.user }}"
+  password: "{{ .Values.backend.secret.values.password }}"
+  database: "{{ .Values.backend.secret.values.database }}"
