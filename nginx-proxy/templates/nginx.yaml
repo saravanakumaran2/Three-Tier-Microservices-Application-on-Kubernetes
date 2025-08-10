@@ -75,6 +75,11 @@ spec:
       containers:
         - name: controller
           image: k8s.gcr.io/ingress-nginx/controller:v1.10.1
+          env:
+            - name: POD_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
           args:
             - /nginx-ingress-controller
             - --publish-service=$(POD_NAMESPACE)/ingress-nginx-controller
@@ -129,7 +134,7 @@ roleRef:
 
 ---
 
-# === Now below is the nginx-proxy app resources with proper Helm templating syntax ===
+# === nginx-proxy app resources with Helm templating syntax ===
 
 apiVersion: v1
 kind: Namespace
