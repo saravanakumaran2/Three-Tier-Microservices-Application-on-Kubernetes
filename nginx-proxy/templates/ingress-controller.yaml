@@ -8,6 +8,7 @@ kind: ServiceAccount
 metadata:
   name: {{ .Values.ingressController.name }}
   namespace: {{ .Values.ingressController.namespace }}
+automountServiceAccountToken: true
 ---
 apiVersion: v1
 kind: Service
