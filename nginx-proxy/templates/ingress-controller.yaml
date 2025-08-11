@@ -22,14 +22,10 @@ rules:
       - pods
       - secrets
       - namespaces
-      - leases                  # Added leases for leader election
     verbs:
       - get
       - list
       - watch
-      - create
-      - update
-      - patch
   - apiGroups: [""]
     resources:
       - nodes
@@ -60,13 +56,23 @@ rules:
       - watch
       - create
       - patch
-  - apiGroups: ["discovery.k8s.io"]        # Added endpointslices for cluster-wide access
+  - apiGroups: ["discovery.k8s.io"]
     resources:
       - endpointslices
     verbs:
       - get
       - list
       - watch
+  - apiGroups: ["coordination.k8s.io"]     # Added leases in correct apiGroup
+    resources:
+      - leases
+    verbs:
+      - get
+      - list
+      - watch
+      - create
+      - update
+      - patch
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
@@ -136,16 +142,16 @@ metadata:
     app.kubernetes.io/name: ingress-nginx
     app.kubernetes.io/component: controller
 spec:
-  type: LoadBalancer            # Change to NodePort if your env does not support LoadBalancer
+  type: LoadBalancer  # Change to NodePort if your environment does not support LoadBalancer
   ports:
     - name: http
       port: 80
       targetPort: 80
-      # nodePort: 30080           # Uncomment if type is NodePort
+      # nodePort: 30080   # Uncomment if you switch to NodePort
     - name: https
       port: 443
       targetPort: 443
-      # nodePort: 30443           # Uncomment if type is NodePort
+      # nodePort: 30443   # Uncomment if you switch to NodePort
   selector:
     app.kubernetes.io/name: ingress-nginx
     app.kubernetes.io/component: controller
