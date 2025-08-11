@@ -23,6 +23,7 @@ rules:
       - secrets
       - namespaces
     verbs:
+      - get
       - list
       - watch
   - apiGroups: [""]
@@ -81,7 +82,7 @@ metadata:
     app.kubernetes.io/name: ingress-nginx
     app.kubernetes.io/component: controller
 spec:
-  replicas: {{ .Values.ingressController.replicas | default 1 }}
+  replicas: 1
   selector:
     matchLabels:
       app.kubernetes.io/name: ingress-nginx
@@ -92,32 +93,31 @@ spec:
         app.kubernetes.io/name: ingress-nginx
         app.kubernetes.io/component: controller
     spec:
-      serviceAccountName: ingress-nginx     # <== add this here
+      serviceAccountName: ingress-nginx
       containers:
-      - name: controller
-        image: {{ .Values.ingressController.image | default "k8s.gcr.io/ingress-nginx/controller:v1.10.1" }}
-        args:
-          - /nginx-ingress-controller
-          - --publish-service=$(POD_NAMESPACE)/ingress-nginx-controller
-          - --election-id=ingress-controller-leader
-          - --controller-class=k8s.io/ingress-nginx
-          - --ingress-class=nginx
-          - --configmap=$(POD_NAMESPACE)/ingress-nginx-controller
-        env:
-          - name: POD_NAMESPACE
-            valueFrom:
-              fieldRef:
-                fieldPath: metadata.namespace
-          - name: POD_NAME
-            valueFrom:
-              fieldRef:
-                fieldPath: metadata.name
-
-        ports:
-          - containerPort: 80
-            name: http
-          - containerPort: 443
-            name: https
+        - name: controller
+          image: k8s.gcr.io/ingress-nginx/controller:v1.10.1
+          args:
+            - /nginx-ingress-controller
+            - --publish-service=$(POD_NAMESPACE)/ingress-nginx-controller
+            - --election-id=ingress-controller-leader
+            - --controller-class=k8s.io/ingress-nginx
+            - --ingress-class=nginx
+            - --configmap=$(POD_NAMESPACE)/ingress-nginx-controller
+          env:
+            - name: POD_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+          ports:
+            - containerPort: 80
+              name: http
+            - containerPort: 443
+              name: https
 ---
 apiVersion: v1
 kind: Service
@@ -131,13 +131,35 @@ spec:
   type: NodePort
   ports:
     - name: http
-      port: {{ .Values.ingressController.service.httpPort | default 80 }}
+      port: 80
       targetPort: 80
-      nodePort: {{ .Values.ingressController.service.httpNodePort | default 30080 }}
+      nodePort: 30080
     - name: https
-      port: {{ .Values.ingressController.service.httpsPort | default 443 }}
+      port: 443
       targetPort: 443
-      nodePort: {{ .Values.ingressController.service.httpsNodePort | default 30443 }}
+      nodePort: 30443
   selector:
     app.kubernetes.io/name: ingress-nginx
     app.kubernetes.io/component: controller
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: myapp-ingress
+  namespace: nginx-proxy
+  annotations:
+    kubernetes.io/ingress.class: nginx
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: myapp.local
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: nginx-proxy
+                port:
+                  number: 80
+  tls: []
