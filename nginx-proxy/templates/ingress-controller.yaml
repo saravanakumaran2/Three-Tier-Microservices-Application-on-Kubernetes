@@ -152,7 +152,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-    - host: myapp.local
+    - host: three-tier.local
       http:
         paths:
           - path: /
