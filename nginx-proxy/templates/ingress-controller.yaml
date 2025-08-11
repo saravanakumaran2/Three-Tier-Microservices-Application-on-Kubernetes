@@ -3,6 +3,75 @@ kind: Namespace
 metadata:
   name: ingress-nginx
 ---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: ingress-nginx
+  namespace: ingress-nginx
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: ingress-nginx
+rules:
+  - apiGroups: [""]
+    resources:
+      - configmaps
+      - endpoints
+      - nodes
+      - pods
+      - secrets
+      - namespaces
+    verbs:
+      - list
+      - watch
+  - apiGroups: [""]
+    resources:
+      - nodes
+    verbs:
+      - get
+  - apiGroups: ["networking.k8s.io"]
+    resources:
+      - ingresses
+      - ingressclasses
+    verbs:
+      - get
+      - list
+      - watch
+  - apiGroups: ["networking.k8s.io"]
+    resourceNames:
+      - nginx
+    resources:
+      - ingressclasses
+    verbs:
+      - get
+  - apiGroups: [""]
+    resources:
+      - services
+    verbs:
+      - get
+      - list
+      - watch
+  - apiGroups: [""]
+    resources:
+      - events
+    verbs:
+      - create
+      - patch
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: ingress-nginx
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: ingress-nginx
+subjects:
+  - kind: ServiceAccount
+    name: ingress-nginx
+    namespace: ingress-nginx
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -23,6 +92,7 @@ spec:
         app.kubernetes.io/name: ingress-nginx
         app.kubernetes.io/component: controller
     spec:
+      serviceAccountName: ingress-nginx     # <== add this here
       containers:
       - name: controller
         image: {{ .Values.ingressController.image | default "k8s.gcr.io/ingress-nginx/controller:v1.10.1" }}
