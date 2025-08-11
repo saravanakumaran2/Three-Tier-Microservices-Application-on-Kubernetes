@@ -1,9 +1,9 @@
----
+# nginx-proxy Helm templated resources (in separate file like nginx_proxy.yaml)
+
 apiVersion: v1
 kind: Namespace
 metadata:
   name: {{ .Values.nginx.namespace }}
-
 
 ---
 apiVersion: apps/v1
@@ -41,4 +41,3 @@ spec:
     - protocol: TCP
       port: {{ .Values.nginx.service.port }}
       targetPort: {{ .Values.nginx.service.targetPort }}
-
