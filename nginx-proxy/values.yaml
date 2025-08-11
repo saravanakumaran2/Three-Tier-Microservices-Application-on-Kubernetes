@@ -5,10 +5,10 @@ nginx:
   namespace: nginx-proxy
   image: saravana227/nginx_proxy_k8s:latest
   service:
-    type: NodePort
+    type: ClusterIP
     port: 80
     targetPort: 80
-    nodePort: 30080
+
 
 ingressController:
   namespace: ingress-nginx
