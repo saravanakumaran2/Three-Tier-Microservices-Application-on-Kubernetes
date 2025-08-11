@@ -126,11 +126,12 @@ metadata:
     app.kubernetes.io/name: ingress-nginx
     app.kubernetes.io/component: controller
 spec:
-  type: ClusterIP
+  type: NodePort          # Changed to NodePort for external access
   ports:
     - name: http
       port: 80
       targetPort: 80
+      nodePort: 30080      # NodePort to access ingress on node IP port 30080
   selector:
     app.kubernetes.io/name: ingress-nginx
     app.kubernetes.io/component: controller
