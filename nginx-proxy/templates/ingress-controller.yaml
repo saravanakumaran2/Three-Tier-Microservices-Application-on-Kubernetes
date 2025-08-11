@@ -170,3 +170,4 @@ spec:
                 name: nginx-proxy
                 port:
                   number: 80
+  tls: []
