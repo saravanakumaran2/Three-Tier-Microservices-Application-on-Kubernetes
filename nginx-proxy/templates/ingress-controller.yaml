@@ -155,16 +155,14 @@ metadata:
     app.kubernetes.io/name: ingress-nginx
     app.kubernetes.io/component: controller
 spec:
-  type: LoadBalancer # Change to NodePort if your environment does not support LoadBalancer
+  type: LoadBalancer
   ports:
     - name: http
       port: 80
       targetPort: 80
-      # nodePort: 30080 # Uncomment if using NodePort
     - name: https
       port: 443
       targetPort: 443
-      # nodePort: 30443 # Uncomment if using NodePort
   selector:
     app.kubernetes.io/name: ingress-nginx
     app.kubernetes.io/component: controller
@@ -174,8 +172,6 @@ kind: Ingress
 metadata:
   name: myapp-ingress
   namespace: nginx-proxy
-  annotations:
-    kubernetes.io/ingress.class: nginx
 spec:
   ingressClassName: nginx
   rules:
