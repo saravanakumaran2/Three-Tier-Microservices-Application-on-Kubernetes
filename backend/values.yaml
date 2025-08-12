@@ -1,23 +1,12 @@
 ---
-replicaCount: 3
+replicaCount: 1
 backend:
   name: backend
   namespace: backend
   image: saravana227/backend:latest
 
-  # Secrets related to MySQL connection
-  mysqlSecret:
-    name: mysql-secret
-    user:
-      key: user
-    password:
-      key: password
-    database:
-      key: database
-
-  # Backend app secret data
-  backendSecret:
-    name: backend-secret
+  secret:
+    name: backend-secret        # Use the secret your Helm template expects
     values:
       user: bXl1c2Vy
       password: bXlwYXNzd29yZA==
