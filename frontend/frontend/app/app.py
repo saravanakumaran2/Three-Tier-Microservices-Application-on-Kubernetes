@@ -25,7 +25,10 @@ def login():
             return redirect(url_for('main'))
         else:
             try:
-                error_msg = res.json().get('error', "Login Failed! Please check your credentials.")
+                error_msg = res.json().get(
+                    'error', 
+                    "Login Failed! Please check your credentials."
+                )
             except Exception:
                 error_msg = "Login Failed! Please check your credentials."
 
@@ -42,7 +45,10 @@ def register():
             return redirect('/login')
         else:
             try:
-                error_msg = res.json().get('error', "Register Failed! Check username and password rules.")
+                error_msg = res.json().get(
+                    'error', 
+                    "Register Failed! Check username and password rules."
+                )
             except Exception:
                 error_msg = "Register Failed! Check username and password rules."
 
@@ -68,3 +74,4 @@ def logout():
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
+
