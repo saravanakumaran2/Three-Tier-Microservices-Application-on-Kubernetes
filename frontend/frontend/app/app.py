@@ -26,7 +26,7 @@ def login():
         else:
             try:
                 error_msg = res.json().get(
-                    'error', 
+                    'error',
                     "Login Failed! Please check your credentials."
                 )
             except Exception:
@@ -46,7 +46,7 @@ def register():
         else:
             try:
                 error_msg = res.json().get(
-                    'error', 
+                    'error',
                     "Register Failed! Check username and password rules."
                 )
             except Exception:
@@ -74,4 +74,3 @@ def logout():
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
-
