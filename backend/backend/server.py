@@ -6,6 +6,7 @@ import traceback
 
 app = Flask(__name__)
 
+
 def get_db_connection():
     return mysql.connector.connect(
         host=os.environ.get("MYSQL_HOST", "mysql"),
@@ -14,8 +15,10 @@ def get_db_connection():
         database=os.environ['MYSQL_DATABASE']
     )
 
+
 @app.route('/register', methods=['POST'])
 def register():
+
     data = request.get_json()
     username = data.get('username', '').strip()
     password = data.get('password', '')
@@ -54,8 +57,10 @@ def register():
 
     return '', 201
 
+
 @app.route('/login', methods=['POST'])
 def login():
+
     data = request.get_json()
     username = data.get('username', '').strip()
     password = data.get('password', '')
@@ -80,9 +85,12 @@ def login():
     else:
         return jsonify({"error": "Invalid username or password"}), 401
 
+
 @app.route('/logout', methods=['POST'])
 def logout():
+
     return '', 200
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5001)
