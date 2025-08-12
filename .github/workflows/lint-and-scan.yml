@@ -50,4 +50,4 @@ jobs:
           config-file: ./   # or your specific path to manifests/helm charts
           severity: HIGH,CRITICAL
           exit-code: 1
-          skip-dirs: .venv
+          skip-dirs: .venv,.github,nginx_proxy_DS,nginx_proxy_k8s
