@@ -38,18 +38,15 @@ jobs:
       - name: Lint all YAML files
         run: yamllint .
 
-      # --- Trivy for Kubernetes/Helm Security ---
-      - name: Install Trivy
-        uses: aquasecurity/trivy-action@master
-        with:
-          version: 'latest'
+      # --- Kubernetes YAML Security Scan using Checkov ---
+      - name: Install Checkov
+        run: pip install checkov
 
-      - name: Scan Kubernetes & Helm YAML for misconfigurations
-        uses: aquasecurity/trivy-action@master
-        with:
-          scan-type: config
-          # Or your specific path to manifests/helm charts
-          config-file: ./backend
-          severity: HIGH,CRITICAL
-          exit-code: 1
-          skip-dirs: .venv,.github,nginx_proxy_DS,nginx_proxy_k8s
+      - name: Scan Kubernetes YAML files
+        run: |
+          checkov -d . \
+            --framework kubernetes \
+            --skip-path .venv \
+            --skip-path .github \
+            --skip-path nginx_proxy_DS \
+            --skip-path nginx_proxy_k8s
