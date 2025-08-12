@@ -3,7 +3,6 @@ import requests
 import os
 
 app = Flask(__name__)
-app.secret_key = "your_secret_key_here"
 
 BACKEND_URL = os.getenv("BACKEND_URL")
 
@@ -18,7 +17,7 @@ def login():
 
     error_msg = ""
     if request.method == 'POST':
-        res = requests.post(f"{BACKEND_URL}/login", json=request.form)
+        res = requests.post(f"{BACKEND_URL}/login", json=request.form, timeout=5)
         if res.status_code == 200:
             username = request.form['username']
             session['username'] = username
@@ -40,7 +39,7 @@ def register():
 
     error_msg = ""
     if request.method == 'POST':
-        res = requests.post(f"{BACKEND_URL}/register", json=request.form)
+        res = requests.post(f"{BACKEND_URL}/register", json=request.form, timeout=5)
         if res.status_code == 201:
             return redirect('/login')
         else:
@@ -68,9 +67,9 @@ def main():
 def logout():
 
     session.pop('username', None)
-    requests.post(f"{BACKEND_URL}/logout")
+    requests.post(f"{BACKEND_URL}/logout", timeout=5)
     return redirect('/login')
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+    app.run(host='127.0.0.1', port=5000)
