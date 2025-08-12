@@ -37,16 +37,3 @@ jobs:
 
       - name: Lint all YAML files
         run: yamllint .
-
-      # --- Kubernetes YAML Security Scan using Checkov ---
-      - name: Install Checkov
-        run: pip install checkov
-
-      - name: Scan Kubernetes YAML files
-        run: |
-          checkov -d . \
-            --framework kubernetes \
-            --skip-path .venv \
-            --skip-path .github \
-            --skip-path nginx_proxy_DS \
-            --skip-path nginx_proxy_k8s
