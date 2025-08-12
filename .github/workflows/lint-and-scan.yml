@@ -45,8 +45,10 @@ jobs:
           version: 'latest'
 
       - name: Scan Kubernetes & Helm YAML for misconfigurations
-        run: |
-         trivy config ./ \
-         --severity HIGH,CRITICAL \
-         --exit-code 1 \
-         --skip-dirs .venv
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: config
+          config-file: ./   # or your specific path to manifests/helm charts
+          severity: HIGH,CRITICAL
+          exit-code: 1
+          skip-dirs: .venv  
