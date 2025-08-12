@@ -48,7 +48,8 @@ jobs:
         uses: aquasecurity/trivy-action@master
         with:
           scan-type: config
-          config-file: ./backend   # or your specific path to manifests/helm charts
+          # Or your specific path to manifests/helm charts
+          config-file: ./backend
           severity: HIGH,CRITICAL
           exit-code: 1
           skip-dirs: .venv,.github,nginx_proxy_DS,nginx_proxy_k8s
