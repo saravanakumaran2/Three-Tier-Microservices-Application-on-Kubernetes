@@ -1,4 +1,5 @@
-name: Lint & Security Scan
+---
+name: "Lint & Security Scan"
 
 on:
   push:
@@ -8,41 +9,44 @@ on:
 
 jobs:
   lint-and-scan:
-    name: Lint Python & YAML, Scan Kubernetes
+    name: "Lint Python & YAML, Scan Kubernetes"
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-    # --- Python Linting ---
-    - name: Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.11'
+      # --- Python Linting ---
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
 
-    - name: Install Python linters
-      run: pip install flake8 bandit
+      - name: Install Python linters
+        run: pip install flake8 bandit
 
-    - name: Lint Python files
-      run: flake8 . --exclude=.venv --max-line-length=100
+      - name: Lint Python files
+        run: flake8 . --exclude=.venv --max-line-length=100
 
-    - name: Security scan Python files
-      run: bandit -r . -x .venv
+      - name: Security scan Python files
+        run: bandit -r . -x .venv
 
-    # --- YAML Linting ---
-    - name: Install yamllint
-      run: sudo apt-get install yamllint -y
+      # --- YAML Linting ---
+      - name: Install yamllint
+        run: sudo apt-get install yamllint -y
 
-    - name: Lint all YAML files
-      run: |
-        yamllint .
+      - name: Lint all YAML files
+        run: yamllint .
 
-    # --- Trivy for Kubernetes/Helm Security ---
-    - name: Install Trivy
-      uses: aquasecurity/trivy-action@master
-      with:
-        version: '0.49.1'  # Use latest version if available
+      # --- Trivy for Kubernetes/Helm Security ---
+      - name: Install Trivy
+        uses: aquasecurity/trivy-action@master
+        with:
+          version: '0.49.1'
 
-    - name: Scan Kubernetes & Helm YAML for misconfigurations
-      run: trivy config ./ --severity HIGH,CRITICAL --exit-code 1 --skip-dirs .venv
+      - name: Scan Kubernetes & Helm YAML for misconfigurations
+        run: |
+          trivy config ./ \
+            --severity HIGH,CRITICAL \
+            --exit-code 1 \
+            --skip-dirs .venv
