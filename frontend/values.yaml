@@ -1,10 +1,10 @@
+---
 replicaCount: 1
+
 frontend:
   name: frontend
   namespace: frontend
   image: saravana227/frontend:latest
-  secret:
-    name: mysql-secret
   service:
     name: frontend
     type: ClusterIP
