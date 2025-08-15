@@ -1,6 +1,5 @@
 ---
 name: "Lint & Security Scan"
-
 on:
   push:
     branches: [main]
